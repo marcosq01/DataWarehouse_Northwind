@@ -2,6 +2,27 @@
 
 -- Poblar tablas de modelo multidimensional (DW_Northwind) a partir de base de datos operacional (NorthwindBD)*/
 
+-- Cambia los nulos en Region de Employees
+
+update NorthwindDB.dbo.Employees set Region = 'Europe' where Country = 'UK'
+
+-- Cambia los nulos en Region de Customers
+
+update NorthwindDB.dbo.Customers set Region = 'North America' where Region is NULL and Country in ('Mexico');
+
+update NorthwindDB.dbo.Customers set Region = 'South America' where Region is NULL and Country in ('Argentina', 'Brazil');
+
+update NorthwindDB.dbo.Customers set Region = 'Europe' where Region is NULL and Country in ('Austria', 'Belgium', 'Denmark', 'Finland', 'France', 'Germany', 'Italy', 'Netherlands', 'Norway', 'Poland', 'Portugal', 'Spain', 'Sweden', 'Switzerland', 'UK');
+
+-- Cambia los nulos en Region de Suppliers
+
+update NorthwindDB.dbo.Suppliers set Region = 'South America' where Region is NULL and Country in ('Argentina', 'Brazil');
+
+update NorthwindDB.dbo.Suppliers set Region = 'Europe' where Region is NULL and Country in ('Austria', 'Belgium', 'Denmark', 'Finland', 'France', 'Germany', 'Italy', 'Netherlands', 'Norway', 'Poland', 'Portugal', 'Spain', 'Sweden', 'Switzerland', 'UK');
+
+update NorthwindDB.dbo.Suppliers set Region = 'Asia' where Region is NULL and Country in ('Japan', 'Singapore');
+
+
 -- Dimension Producto
 Insert into DW_Northwind.dbo.DimProduct
    select p.ProductID, p.ProductName, c.CategoryName, s.CompanyName, s.Address, s.City, s.Region, s.PostalCode, s.Country   
@@ -34,23 +55,3 @@ Insert into DW_Northwind.dbo.FactSales
     from NorthwindDB.dbo.Orders o, NorthwindDB.dbo.[Order Details] od 
     where o.OrderID = od.OrderID;
 
-
--- Cambia los nulos en Region de DimEmployee
-
-update DW_Northwind.dbo.DimEmployee set Region = 'Europe' where Country = 'UK';
-
--- Cambia los nulos en Region de DimCustomer
-
-update DW_Northwind.dbo.DimCustomer set Region = 'North America' where Region is NULL and Country in ('Mexico');
-
-update DW_Northwind.dbo.DimCustomer set Region = 'South America' where Region is NULL and Country in ('Argentina', 'Brazil');
-
-update DW_Northwind.dbo.DimCustomer set Region = 'Europe' where Region is NULL and Country in ('Austria', 'Belgium', 'Denmark', 'Finland', 'France', 'Germany', 'Italy', 'Netherlands', 'Norway', 'Poland', 'Portugal', 'Spain', 'Sweden', 'Switzerland', 'UK');
-
--- Cambia los nulos en Region de DimProduct
-
-update DW_Northwind.dbo.DimProduct set Region = 'South America' where Region is NULL and Country in ('Argentina', 'Brazil');
-
-update DW_Northwind.dbo.DimProduct set Region = 'Europe' where Region is NULL and Country in ('Austria', 'Belgium', 'Denmark', 'Finland', 'France', 'Germany', 'Italy', 'Netherlands', 'Norway', 'Poland', 'Portugal', 'Spain', 'Sweden', 'Switzerland', 'UK');
-
-update DW_Northwind.dbo.DimProduct set Region = 'Asia' where Region is NULL and Country in ('Japan', 'Singapore');
